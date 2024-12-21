@@ -3,12 +3,12 @@ import Pool from 'pg-pool'
 const app = express()
 const port = 3001
 
-const pool = Pool({
+const pool = new Pool({
     host: 'localhost',
     port: 5433,
     password: 'postgres',
-    username: 'postgres',
-    db: 'payment'
+    user: 'postgres',
+    database: 'payment'
 })
 
 app.post('/requestChargePayment', async (req, res) => {
