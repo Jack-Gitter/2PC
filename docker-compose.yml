@@ -1,0 +1,15 @@
+services:
+  db1:
+    image: postgres:latest
+    ports: 
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+      MAX_PREPARED_TRANSACTIONS: 100
+  db2:
+    image: postgres:latest
+    ports: 
+      - 5434:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+      MAX_PREPARED_TRANSACTIONS: 100

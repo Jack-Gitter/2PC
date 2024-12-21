@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "express": "^4.21.1"
+    "@types/pg-pool": "^2.0.6",
+    "express": "^4.21.1",
+    "pg-pool": "^3.7.0",
+    "postgres": "^3.4.5"
   }
 }
