@@ -25,6 +25,13 @@ app.post('/charge', async (req, res) => {
     res.json({ preparedStatementID })
 })
 
+app.post('/charge/commit/:id', async (req, res) => {
+
+})
+
+app.post('/charge/rollback/:id', async (req, res) => {
+
+})
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

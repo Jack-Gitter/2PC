@@ -15,9 +15,21 @@ const pool = new Pool({
 
 app.post('/invoice', async (req, res) => {
     const preparedStatementID = crypto.randomUUID()
-    pool.query(`BEGIN TRANSACTION INSERT INTO invoices values ($1, $2, $3) PREPARE TRANSACTION $4`, [req.body.user.id, req.body.user.name, req.body.user.price, preparedStatementID])
+    const connection = await pool.connect()
+    await connection.query('BEGIN TRANSACTION')
+    await connection.query(`INSERT INTO invoices values (${req.body.user.id}, ${req.body.user.name}, ${req.body.price}`)
+    await connection.query(`PREPARE TRANSACTION ${preparedStatementID}`)
+    connection.release()
     res.json({ preparedStatementID })
 })
+
+app.post('/invoice/commit/:id', async (req, res) => {
+
+}) 
+
+app.post('/invoice/rollback/:id', async (req, res) => {
+
+}) 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
