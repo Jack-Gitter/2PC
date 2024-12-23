@@ -17,8 +17,7 @@ const pool = new Pool({
 //eslint-disable-next-line
 app.post('/charge', async (req, res) => {
     const preparedStatementID = crypto.randomUUID()
-    console.log(req.body)
-    pool.query(`BEGIN TRANSACTION UPDATE users SET money = money - 1 PREPARE TRANSACTION $2`, [req.body.user.name, preparedStatementID])
+    pool.query(`BEGIN TRANSACTION; UPDATE users SET money = money - 1 WHERE user = $1; PREPARE TRANSACTION $2`, [req.body.user.name, preparedStatementID])
     res.json({ preparedStatementID })
 })
 
