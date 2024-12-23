@@ -1,8 +1,12 @@
 {
   "dependencies": {
     "@types/pg-pool": "^2.0.6",
+    "body-parser": "^1.20.3",
     "express": "^4.21.1",
     "pg-pool": "^3.7.0",
     "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
   }
 }
