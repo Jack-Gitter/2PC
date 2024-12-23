@@ -11,8 +11,9 @@ const pool = new Pool({
     database: 'invoices'
 })
 
-app.post('/requestSendInvoice', async (req, res) => {
+app.post('/invoice', async (req, res) => {
     const preparedStatementID = crypto.randomUUID()
+    pool.query(`BEGIN TRANSACTION INSERT INTO invoices values ($1, $2, $3) PREPARE TRANSACTION $4`, [req.user.id, req.user.name, req.user.price, preparedStatementID])
     res.json({ preparedStatementID })
 })
 

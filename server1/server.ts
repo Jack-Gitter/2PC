@@ -11,10 +11,12 @@ const pool = new Pool({
     database: 'payment'
 })
 
-app.post('/requestChargePayment', async (req, res) => {
+app.post('/charge', async (req, res) => {
     const preparedStatementID = crypto.randomUUID()
+    pool.query(`BEGIN TRANSACTION UPDATE payments SET money = money - 1 WHERE user = $1 PREPARE TRANSACTION $2`, [req.user.name, preparedStatementID])
     res.json({ preparedStatementID })
 })
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
