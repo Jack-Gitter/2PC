@@ -1,4 +1,4 @@
 export enum STATUS {
-	SUCCESS = 'success',
-	FAILURE = 'failure'
+	COMMIT = 'commit',
+	ROLLBACK = 'rollback'
 }

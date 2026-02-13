@@ -5,13 +5,10 @@ import { UUID } from 'crypto'
 @Entity('coordinator_logs')
 export class CoordinatorLog {
 
-	constructor(transactionId: UUID, status1?: STATUS,  status2?: STATUS) {}
+	constructor(transactionId: UUID, status?: STATUS) {}
 
 	@Column({type: 'enum', enum: STATUS, nullable: true})
-	status1: STATUS | null
-
-	@Column({type: 'enum', enum: STATUS, nullable: true})
-	status2: STATUS | null
+	status: STATUS | null
 
 	@Column({type: 'uuid', primary: true})
 	transactionId: UUID

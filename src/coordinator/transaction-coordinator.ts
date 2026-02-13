@@ -16,11 +16,10 @@ export class TransactionCoordinator {
 		const { personResponse, addressResponse } = await this.phase1(txId)
 
 		// WAL
-		log.status1 = personResponse ? STATUS.SUCCESS : STATUS.FAILURE
-		log.status2 = addressResponse ? STATUS.SUCCESS : STATUS.FAILURE
+		log.status = personResponse && addressResponse ? STATUS.COMMIT : STATUS.ROLLBACK
 		await this.coordinatorRepository.save(log)
 
-		await this.phase2(txId, personResponse, addressResponse)
+		await this.phase2(txId, log.status)
 	}
 
 	private async phase1(txId: UUID): Promise<{personResponse: boolean, addressResponse: boolean}> {
@@ -29,8 +28,8 @@ export class TransactionCoordinator {
 		return {personResponse, addressResponse}
 	}
 
-	private async phase2(txId: UUID, personResponse: boolean, addressResponse: boolean) {
-		if (personResponse && addressResponse) {
+	private async phase2(txId: UUID, status: STATUS) {
+		if (status === STATUS.COMMIT) {
 			await this.commit(txId)
 		} else {
 			await this.rollback(txId)
@@ -51,31 +50,5 @@ export class TransactionCoordinator {
 		await this.coordinatorRepository.delete({ transactionId: txid });
 	}
 
-	async recover() {
-		const incompleteTxs = await this.coordinatorRepository.find();
-
-		for (const log of incompleteTxs) {
-			try {
-				const phase1Completed = log.status1 && log.status2
-				
-				if (phase1Completed) {
-					const personSuccess = log.status1 === STATUS.SUCCESS;
-					const addressSuccess = log.status2 === STATUS.SUCCESS;
-					
-					await this.phase2(log.transactionId, personSuccess, addressSuccess);
-					
-				} else {
-					const { personResponse, addressResponse } = await this.phase1(log.transactionId);
-					
-					log.status1 = personResponse ? STATUS.SUCCESS : STATUS.FAILURE;
-					log.status2 = addressResponse ? STATUS.SUCCESS : STATUS.FAILURE;
-					await this.coordinatorRepository.save(log);
-					
-					await this.phase2(log.transactionId, personResponse, addressResponse);
-				}
-			} catch (error) {
-				console.error(`Failed to recover transaction ${log.transactionId}:`, error);
-			}
-		}
-	}
+	async recover() {}
 }
