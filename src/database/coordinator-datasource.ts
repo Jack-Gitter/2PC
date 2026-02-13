@@ -2,6 +2,7 @@ import { DataSource } from "typeorm";
 import { configDotenv } from "dotenv";
 import { DB_1, ENV, } from "../enums";
 import { CoordinatorLog } from "./entities/coordinator-log.entity";
+import { Init1771006154129 } from "./migrations/1771006154129-init";
 
 configDotenv()
 
@@ -13,7 +14,7 @@ export const coordinatorDatasource = new DataSource({
 	password: process.env[DB_1.DB_PASSWORD],
 	database: process.env[DB_1.DB_NAME],
 	entities: [CoordinatorLog],
-	migrations: []
+	migrations: [Init1771006154129]
 })
 
 

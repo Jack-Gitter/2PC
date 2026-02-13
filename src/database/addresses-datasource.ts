@@ -2,6 +2,7 @@ import { DataSource } from "typeorm";
 import { Address } from "./entities/address.entity";
 import { DB_3, ENV } from "src/enums";
 import { configDotenv } from "dotenv";
+import { Addresses1771006423217 } from "./migrations/1771006423217-addresses";
 
 configDotenv()
 
@@ -13,5 +14,5 @@ export const addressDatasource = new DataSource({
 	password: process.env[DB_3.DB_PASSWORD],
 	database: process.env[DB_3.DB_NAME],
 	entities: [Address],
-	migrations: []
+	migrations: [Addresses1771006423217]
 })
