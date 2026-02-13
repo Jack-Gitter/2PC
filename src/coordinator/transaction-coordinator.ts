@@ -51,13 +51,11 @@ export class TransactionCoordinator {
 		await this.coordinatorRepository.update({transactionId: txId}, {status: STATUS.DONE});
 	}
 
-	// keep trying here if we can a connection error. If we get an error that no txid exists, then stop. If we get any other error, that is bad
 	async rollback(txid: UUID) {
 		await backOff(() => this.personsService.rollback(txid))
 		await backOff(() => this.addressService.rollback(txid))
 	}
 
-	// keep retrying here if we get a connection error. If we get an error that no txid exists, then stop. If we get any other error, that is bad
 	async commit(txid: UUID) {
 		await backOff(() => this.personsService.commit(txid))
 		await backOff(() => this.addressService.commit(txid))
