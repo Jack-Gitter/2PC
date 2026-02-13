@@ -6,7 +6,7 @@ export class AddressesService implements ICordinatableService {
 
 	constructor(private datasource: DataSource) {}
 
-    prepare(txid: UUID): boolean {
+    async prepare(txid: UUID): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
     commit(txid: UUID) {
