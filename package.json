@@ -4,8 +4,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mgrgen": "npx typeorm-ts-node-commonjs migration:generate -d src/database/datasource.ts",
-    "mgrrun": "npx typeorm-ts-node-commonjs migration:run -d src/database/datasource.ts"
+    "mgrgen_coord": "npx typeorm-ts-node-commonjs migration:generate -d src/database/coordinator-datasource.ts",
+	"mgrgen_address": "npx typeorm-ts-node-commonjs migration:generate -d src/database/addresses-datasource.ts",
+	"mgrgen_persons": "npx typeorm-ts-node-commonjs migration:generate -d src/database/persons-datasource.ts",
+    "mgrrun_coord": "npx typeorm-ts-node-commonjs migration:run -d src/database/coordinator-datasource.ts",
+	"mrgrun_address": "npx typeorm-ts-node-commonjs migration:run -d src/database/addresses-datasource.ts",
+	"mgrrun_persons": "npx typeorm-ts-node-commonjs migration:run -d src/database/persons-datasource.ts"
   },
   "author": "",
   "license": "ISC",
