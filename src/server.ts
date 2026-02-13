@@ -1,12 +1,31 @@
 import express, { Request, Response } from 'express'
+import { TransactionCoordinator } from './coordinator/transaction-coordinator'
 
-export const app = express()
-const port = 3000
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!')
-})
+export class Server {
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+	private app 
+	private port
+
+	constructor(
+		private transactionCoordinator: TransactionCoordinator, 
+	) {
+		this.app = express()
+		this.port = 3000
+	}
+
+	async init() {
+
+		this.app.get('/', (req: Request, res: Response) => {
+		  res.send('Hello World!')
+		})
+
+		this.app.post('/', (req: Request, res: Response) => {
+		  
+		})
+
+		this.app.listen(this.port, () => {
+		  console.log(`Example app listening on port ${this.port}`)
+		})
+	}
+}
