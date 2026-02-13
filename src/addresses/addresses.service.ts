@@ -1,8 +1,8 @@
-import { ICordinatableService } from "src/services/i-cordinatable-service";
+import { ICoordinatableService } from "src/services/i-cordinatable-service";
 import { DataSource } from "typeorm";
 import {UUID} from 'crypto'
 
-export class AddressesService implements ICordinatableService {
+export class AddressesService implements ICoordinatableService {
 
 	constructor(private datasource: DataSource) {}
 
