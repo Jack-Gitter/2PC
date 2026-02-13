@@ -8,7 +8,7 @@
 	"mgrgen_address": "npx typeorm-ts-node-commonjs migration:generate -d src/database/addresses-datasource.ts",
 	"mgrgen_persons": "npx typeorm-ts-node-commonjs migration:generate -d src/database/persons-datasource.ts",
     "mgrrun_coord": "npx typeorm-ts-node-commonjs migration:run -d src/database/coordinator-datasource.ts",
-	"mrgrun_address": "npx typeorm-ts-node-commonjs migration:run -d src/database/addresses-datasource.ts",
+	"mgrrun_address": "npx typeorm-ts-node-commonjs migration:run -d src/database/addresses-datasource.ts",
 	"mgrrun_persons": "npx typeorm-ts-node-commonjs migration:run -d src/database/persons-datasource.ts"
   },
   "author": "",

@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 import { Address } from "./entities/address.entity";
-import { DB_3, ENV } from "src/enums";
+import { DB_3, ENV } from "../enums";
 import { configDotenv } from "dotenv";
 import { Addresses1771006423217 } from "./migrations/1771006423217-addresses";
 

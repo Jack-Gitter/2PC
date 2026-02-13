@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 import { Person } from "./entities/person.entity";
-import { DB_2, ENV } from "src/enums";
+import { DB_2, ENV } from "../enums";
 import { configDotenv } from "dotenv";
 import { Person1771006413650 } from "./migrations/1771006413650-person";
 
