@@ -1,8 +1,7 @@
 import { CoordinatorLog } from "src/database/entities/coordinator-log.entity";
 import { ICordinatableService } from "src/services/i-cordinatable-service";
-import { DataSource, Repository } from "typeorm";
-import {randomUUID, UUID} from 'crypto'
-import { coordinatorDatasource } from "src/database/coordinator-datasource";
+import { Repository } from "typeorm";
+import { randomUUID } from 'crypto'
 
 export class TransactionCoordinator {
 	constructor(private personsService: ICordinatableService, private addressService: ICordinatableService, private coordinatorRepository: Repository<CoordinatorLog>) {}
