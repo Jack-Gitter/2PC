@@ -23,9 +23,17 @@ export class TransactionCoordinator {
 		}
 	}
 
-	async rollback(txid: UUID) {}
+	async rollback(txid: UUID) {
+		await this.personsService.rollback(txid)
+		await this.addressService.rollback(txid)
+	}
 
-	async commit(txid: UUID) {}
+	async commit(txid: UUID) {
+		await this.personsService.commit(txid)
+		await this.addressService.commit(txid)
+	}
 
-	recover() {}
+	recover() {
+		// load transactions from db, create prepared transactions if no status, and commit/rollback as necessary if status exists
+	}
 }
