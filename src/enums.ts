@@ -1,23 +1,23 @@
 export enum ENV {
-	HOST = 'host',
-	PORT = 'port_1',
+	DB_HOST = 'DB_HOST',
+	DB_PORT = 'DB_PORT',
 }
 
 export enum DB_1 {
-	USERNAME = 'username',
-	PASSWORD = 'password',
-	NAME = 'db_name_1'
+	DB_USERNAME = 'DB_USERNAME',
+	DB_PASSWORD = 'DB_PASSWORD',
+	DB_NAME = 'DB_NAME_1'
 }
 
 
 export enum DB_2 {
-	USERNAME = 'username',
-	PASSWORD = 'password',
-	NAME = 'db_name_2'
+	DB_USERNAME = 'DB_USERNAME',
+	DB_PASSWORD = 'DB_PASSWORD',
+	DB_NAME = 'DB_NAME_2'
 }
 
 export enum DB_3 {
-	USERNAME = 'username',
-	PASSWORD = 'password',
-	NAME = 'db_name_3'
+	DB_USERNAME = 'DB_USERNAME',
+	DB_PASSWORD = 'DB_PASSWORD',
+	DB_NAME = 'DB_NAME_3'
 }
