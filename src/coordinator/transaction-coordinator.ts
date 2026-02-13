@@ -3,6 +3,7 @@ import { Repository } from "typeorm";
 import { randomUUID, UUID } from 'crypto'
 import { STATUS } from "src/database/enums";
 import { ICoordinatableService } from "src/services/i-cordinatable-service";
+import { backOff } from "exponential-backoff";
 
 export class TransactionCoordinator {
 	constructor(private personsService: ICoordinatableService, private addressService: ICoordinatableService, private coordinatorRepository: Repository<CoordinatorLog>) {}
@@ -23,8 +24,21 @@ export class TransactionCoordinator {
 	}
 
 	private async phase1(txId: UUID): Promise<{personResponse: boolean, addressResponse: boolean}> {
-		const personResponse = await this.personsService.prepare(txId)
-		const addressResponse = await this.addressService.prepare(txId)
+		let personResponse = false
+		let addressResponse = false
+
+		try {
+			const personResponse = await this.personsService.prepare(txId)
+		} catch (e) {
+			console.log(`Failed to prepare transaction with id ${txId} for person`)
+		}
+
+		try {
+			const addressResponse = await this.addressService.prepare(txId)
+		} catch (e) {
+			console.log(`Failed to prepare transaction with id ${txId} for address`)
+		}
+
 		return { personResponse, addressResponse }
 	}
 
@@ -39,14 +53,14 @@ export class TransactionCoordinator {
 
 	// keep trying here if we can a connection error. If we get an error that no txid exists, then stop. If we get any other error, that is bad
 	async rollback(txid: UUID) {
-		await this.personsService.rollback(txid)
-		await this.addressService.rollback(txid)
+		await backOff(() => this.personsService.rollback(txid))
+		await backOff(() => this.addressService.rollback(txid))
 	}
 
 	// keep retrying here if we get a connection error. If we get an error that no txid exists, then stop. If we get any other error, that is bad
 	async commit(txid: UUID) {
-		await this.personsService.commit(txid)
-		await this.addressService.commit(txid)
+		await backOff(() => this.personsService.commit(txid))
+		await backOff(() => this.addressService.commit(txid))
 	}
 
 	async recover() {}
