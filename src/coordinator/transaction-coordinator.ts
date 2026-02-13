@@ -9,14 +9,12 @@ export class TransactionCoordinator {
 	constructor(private personsService: ICoordinatableService, private addressService: ICoordinatableService, private coordinatorRepository: Repository<CoordinatorLog>) {}
 
 	async begin() {
-		// WAL
 		const txId = randomUUID()
 		const log = new CoordinatorLog(txId)
 		await this.coordinatorRepository.save(log)
 
 		const { personResponse, addressResponse } = await this.phase1(txId)
 
-		// WAL
 		log.status = personResponse && addressResponse ? STATUS.COMMIT : STATUS.ROLLBACK
 		await this.coordinatorRepository.save(log)
 
