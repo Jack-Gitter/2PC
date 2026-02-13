@@ -61,7 +61,6 @@ export class TransactionCoordinator {
 		await backOff(() => this.addressService.commit(txid))
 	}
 
-	// THIS IS AI GENERATED. LOOK AT IT CLOSELY
 	async recover() {
 		const incompleteTxs = await this.coordinatorRepository.find({
 			where: { status: Not(STATUS.DONE) }
