@@ -9,10 +9,11 @@ export class TransactionCoordinator {
 
 	async begin() {
 		const txId = randomUUID()
-		const personResponse = await this.personsService.prepare(txId)
-		const addressResponse = await this.addressService.prepare(txId)
 		const log = new CoordinatorLog(txId)
 		await this.coordinatorRepository.save(log)
+		const personResponse = await this.personsService.prepare(txId)
+		const addressResponse = await this.addressService.prepare(txId)
+		// set log.status1 and log.status2 here
 	}
 
 	rollback() {}
