@@ -1,0 +1,2 @@
+CREATE DATABASE addresses;
+CREATE DATABASE persons;
