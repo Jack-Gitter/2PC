@@ -21,8 +21,8 @@ export class Server {
 		  res.send('Hello World!')
 		})
 
-		this.app.post('/', (req: Request, res: Response) => {
-		  
+		this.app.post('update-person', async (req: Request, res: Response) => {
+			await this.transactionCoordinator.begin()
 		})
 
 		this.app.listen(this.port, () => {

@@ -1,17 +1,18 @@
 import { ICordinatableService } from "src/services/i-cordinatable-service";
 import { DataSource } from "typeorm";
+import {UUID} from 'crypto'
 
 export class AddressesService implements ICordinatableService {
 
 	constructor(private datasource: DataSource) {}
 
-    prepare(): boolean {
+    prepare(txid: UUID): boolean {
         throw new Error("Method not implemented.");
     }
-    commit() {
+    commit(txid: UUID) {
         throw new Error("Method not implemented.");
     }
-    rollback() {
+    rollback(txid: UUID) {
         throw new Error("Method not implemented.");
     }
 }

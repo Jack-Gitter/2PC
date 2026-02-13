@@ -1,5 +1,7 @@
+import {UUID} from 'crypto'
+
 export interface ICordinatableService {
-	prepare(): boolean
-	commit()
-	rollback()
+	prepare(txid: UUID): boolean
+	commit(txid: UUID)
+	rollback(txid: UUID)
 }

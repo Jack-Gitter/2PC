@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-	"start": "npx ts-node ./src/main",
+    "start": "npx ts-node ./src/main",
     "test": "echo \"Error: no test specified\" && exit 1",
     "mgrgen_coord": "npx typeorm-ts-node-commonjs migration:generate -d src/database/coordinator-datasource.ts",
-	"mgrgen_address": "npx typeorm-ts-node-commonjs migration:generate -d src/database/addresses-datasource.ts",
-	"mgrgen_persons": "npx typeorm-ts-node-commonjs migration:generate -d src/database/persons-datasource.ts",
+    "mgrgen_address": "npx typeorm-ts-node-commonjs migration:generate -d src/database/addresses-datasource.ts",
+    "mgrgen_persons": "npx typeorm-ts-node-commonjs migration:generate -d src/database/persons-datasource.ts",
     "mgrrun_coord": "npx typeorm-ts-node-commonjs migration:run -d src/database/coordinator-datasource.ts",
-	"mgrrun_address": "npx typeorm-ts-node-commonjs migration:run -d src/database/addresses-datasource.ts",
-	"mgrrun_persons": "npx typeorm-ts-node-commonjs migration:run -d src/database/persons-datasource.ts"
+    "mgrrun_address": "npx typeorm-ts-node-commonjs migration:run -d src/database/addresses-datasource.ts",
+    "mgrrun_persons": "npx typeorm-ts-node-commonjs migration:run -d src/database/persons-datasource.ts"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "express": "^5.2.1",
     "pg": "^8.18.0",
     "ts-node": "^10.9.2",
-    "typeorm": "^0.3.28"
+    "typeorm": "^0.3.28",
+    "uuid": "^13.0.0"
   }
 }
