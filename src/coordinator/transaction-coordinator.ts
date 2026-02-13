@@ -8,4 +8,6 @@ export class TransactionCoordinator {
 	rollback() {}
 
 	commit() {}
+
+	recover() {}
 }
