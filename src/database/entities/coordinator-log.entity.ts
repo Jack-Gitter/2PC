@@ -12,7 +12,7 @@ export class CoordinatorLog {
 	@Column({type: 'enum', enum: STATUS, nullable: true})
 	status2: STATUS
 
-	@Column({type: 'uuid'})
+	@Column({type: 'uuid', primary: true})
 	transactionId: UUID
 
 }

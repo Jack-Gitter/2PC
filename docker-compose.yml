@@ -8,9 +8,9 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: strongpassword
-      POSTGRES_DB: coordinator  # default DB (required)
+      POSTGRES_DB: coordinator  
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./init-dbs.sql:/docker-entrypoint-initdb.d/init-dbs.sql

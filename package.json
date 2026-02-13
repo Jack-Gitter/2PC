@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mgrgen": "npx typeorm-ts-node-commonjs migration:generate -d src/database/datasource.ts",
+    "mgrrun": "npx typeorm-ts-node-commonjs migration:run -d src/database/datasource.ts"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +18,7 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "pg": "^8.18.0",
+    "ts-node": "^10.9.2",
     "typeorm": "^0.3.28"
   }
 }
