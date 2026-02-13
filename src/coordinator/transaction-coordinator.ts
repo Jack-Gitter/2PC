@@ -28,13 +28,13 @@ export class TransactionCoordinator {
 		let addressResponse = false
 
 		try {
-			const personResponse = await this.personsService.prepare(txId)
+			personResponse = await this.personsService.prepare(txId)
 		} catch (e) {
 			console.log(`Failed to prepare transaction with id ${txId} for person`)
 		}
 
 		try {
-			const addressResponse = await this.addressService.prepare(txId)
+			addressResponse = await this.addressService.prepare(txId)
 		} catch (e) {
 			console.log(`Failed to prepare transaction with id ${txId} for address`)
 		}
