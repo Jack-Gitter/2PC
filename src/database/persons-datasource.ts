@@ -1,7 +1,9 @@
 import { DataSource } from "typeorm";
 import { Person } from "./entities/person.entity";
 import { DB_2, ENV } from "src/enums";
+import { configDotenv } from "dotenv";
 
+configDotenv()
 
 export const personDatasource = new DataSource({
 	type: 'postgres',
