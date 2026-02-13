@@ -1,14 +1,18 @@
 import { Column, Entity } from "typeorm";
+import { UUID } from "typeorm/driver/mongodb/bson.typings";
+import { STATUS } from "../enums";
 
 
-@Entity()
-export class coordinator_log {
+@Entity('coordinator_logs')
+export class CoordinatorLog {
 
-	@Column()
-	dbName1: string
+	@Column({type: 'enum', enum: STATUS, nullable: true})
+	status1: STATUS
 
-	@Column()
-	dbName2: string
+	@Column({type: 'enum', enum: STATUS, nullable: true})
+	status2: STATUS
 
+	@Column({type: 'uuid'})
+	transactionId: UUID
 
 }
