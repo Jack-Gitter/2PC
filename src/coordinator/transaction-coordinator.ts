@@ -25,7 +25,7 @@ export class TransactionCoordinator {
 	private async phase1(txId: UUID): Promise<{personResponse: boolean, addressResponse: boolean}> {
 		const personResponse = await this.personsService.prepare(txId)
 		const addressResponse = await this.addressService.prepare(txId)
-		return {personResponse, addressResponse}
+		return { personResponse, addressResponse }
 	}
 
 	private async phase2(txId: UUID, status: STATUS) {
@@ -40,14 +40,14 @@ export class TransactionCoordinator {
 	async rollback(txid: UUID) {
 		await this.personsService.rollback(txid)
 		await this.addressService.rollback(txid)
-		await this.coordinatorRepository.delete({ transactionId: txid });
+		await this.coordinatorRepository.update({transactionId: txid}, {status: STATUS.DONE});
 	}
 
 	// keep retrying here if we get a connection error. If we get an error that no txid exists, then stop. If we get any other error, that is bad
 	async commit(txid: UUID) {
 		await this.personsService.commit(txid)
 		await this.addressService.commit(txid)
-		await this.coordinatorRepository.delete({ transactionId: txid });
+		await this.coordinatorRepository.update({transactionId: txid}, {status: STATUS.DONE});
 	}
 
 	async recover() {}
