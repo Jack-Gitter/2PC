@@ -1,5 +1,5 @@
 import { CoordinatorLog } from "src/database/entities/coordinator-log.entity";
-import { Repository } from "typeorm";
+import { Not, Repository } from "typeorm";
 import { randomUUID, UUID } from 'crypto'
 import { STATUS } from "src/database/enums";
 import { ICoordinatableService } from "src/services/i-cordinatable-service";
@@ -61,5 +61,25 @@ export class TransactionCoordinator {
 		await backOff(() => this.addressService.commit(txid))
 	}
 
-	async recover() {}
+	// THIS IS AI GENERATED. LOOK AT IT CLOSELY
+	async recover() {
+		const incompleteTxs = await this.coordinatorRepository.find({
+			where: { status: Not(STATUS.DONE) }
+		})
+		
+		for (const log of incompleteTxs) {
+			try {
+				if (!log.status) {
+					const { personResponse, addressResponse } = await this.phase1(log.transactionId)
+					log.status = personResponse && addressResponse ? STATUS.COMMIT : STATUS.ROLLBACK
+					await this.coordinatorRepository.save(log)
+				}
+				
+				await this.phase2(log.transactionId, log.status)
+				
+			} catch (error) {
+				console.error(`Recovery failed for transaction ${log.transactionId}:`, error)
+			}
+		}
+	}
 }
