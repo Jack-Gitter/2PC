@@ -6,12 +6,15 @@ export class PersonsService implements ICoordinatableService {
 
 	constructor(private datasource: DataSource) {}
 
+	// make this idemptontent, look for txid before doing any action
     async prepare(txid: UUID): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
+	// make this idemptontent, look for txid before doing any action
     commit(txid: UUID) {
         throw new Error("Method not implemented.");
     }
+	// make this idemptontent, look for txid before doing any action
     rollback(txid: UUID) {
         throw new Error("Method not implemented.");
     }
