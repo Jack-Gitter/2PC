@@ -22,7 +22,7 @@ export class AddressesService implements ICoordinatableService {
 		WHERE 
 			id = 1;
 
-		PREPARE TRANSACTION $1;
+		PREPARE TRANSACTION '$1';
 		`
 
 		const result = await this.datasource.query(query, [txid])
@@ -38,7 +38,7 @@ export class AddressesService implements ICoordinatableService {
 		
 		// if it doesnt exist, return true
 
-		const query = `COMMIT PREPARED $1`
+		const query = `COMMIT PREPARED '$1'`
 
 		const result = await this.datasource.query(query, [txid])
 
@@ -53,7 +53,7 @@ export class AddressesService implements ICoordinatableService {
 		
 		// return true if tx does not exist
 		
-		const query = `ROLLBACK PREPARED $1`
+		const query = `ROLLBACK PREPARED '$1'`
 
 		const result = await this.datasource.query(query, [txid])
 
@@ -69,7 +69,7 @@ export class AddressesService implements ICoordinatableService {
 			SELECT EXISTS (
 			  SELECT 1
 			  FROM pg_prepared_xacts
-			  WHERE gid = $1 
+			  WHERE gid = '$1'
 			);
 		`
 
