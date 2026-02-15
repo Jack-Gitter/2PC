@@ -1,8 +1,8 @@
-import { CoordinatorLog } from "src/database/entities/coordinator-log.entity";
+import { CoordinatorLog } from "../database/entities/coordinator-log.entity";
 import { Not, Repository } from "typeorm";
 import { randomUUID, UUID } from 'crypto'
-import { STATUS } from "src/database/enums";
-import { ICoordinatableService } from "src/services/i-cordinatable-service";
+import { STATUS } from "../database/enums";
+import { ICoordinatableService } from "../services/i-cordinatable-service";
 import { backOff } from "exponential-backoff";
 
 export class TransactionCoordinator {
@@ -11,6 +11,8 @@ export class TransactionCoordinator {
 	async begin() {
 		const txId = randomUUID()
 		const log = new CoordinatorLog(txId)
+		const result = await this.coordinatorRepository.find()
+		console.log(result)
 		await this.coordinatorRepository.save(log)
 
 		await this.phase1(log)
