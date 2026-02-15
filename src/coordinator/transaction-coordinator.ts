@@ -14,7 +14,7 @@ export class TransactionCoordinator {
 		await this.coordinatorRepository.save(log)
 
 		await this.phase1(log)
-		// await this.phase2(log)
+		await this.phase2(log)
 	}
 
 	private async phase1(log: CoordinatorLog) {
