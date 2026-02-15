@@ -11,8 +11,6 @@ export class TransactionCoordinator {
 	async begin() {
 		const txId = randomUUID()
 		const log = new CoordinatorLog(txId)
-		const result = await this.coordinatorRepository.find()
-		console.log(result)
 		await this.coordinatorRepository.save(log)
 
 		await this.phase1(log)

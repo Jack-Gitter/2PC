@@ -1,3 +1,4 @@
+import "reflect-metadata"
 import { AddressesService } from "./addresses/addresses.service"
 import { TransactionCoordinator } from "./coordinator/transaction-coordinator"
 import { addressDatasource } from "./database/addresses-datasource"
