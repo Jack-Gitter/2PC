@@ -9,59 +9,49 @@ export class PersonsService implements ICoordinatableService {
     async prepare(txid: UUID): Promise<boolean> {
 
 		const txExists = await this.txExists(txid)
-		
-		// if txExists, return true
 
-		const query = `
-		BEGIN TRANSACTION;
+		if (txExists) {
+			return true
+		}
 
-		UPDATE 
-			PERSONS 
-		SET 
-			FIRSTNAME = 'New Firstname' 
-		WHERE 
-			id = 1;
+		try {
+			const query = ` BEGIN TRANSACTION; UPDATE PERSONS SET FIRSTNAME = 'New Firstname' WHERE id = 1; PREPARE TRANSACTION '${txid}'; `
+			await this.datasource.query(query)
+			return true
+		} catch (e) {
+			console.log(e.message)
+			return false
+		}
 
-		PREPARE TRANSACTION '${txid}';
-		`
-
-		const result = await this.datasource.query(query)
-
-		console.log(`result of person service prepare transaction with id ${txid}`)
-		console.log(result)
-
-		return false
     }
 
     async commit(txid: UUID) {
 
 		const txExists = await this.txExists(txid)
-		
-		// if it doesnt exist, return true
 
+		if (!txExists) {
+			return true
+		}
+		
 		const query = `COMMIT PREPARED '${txid}'`
 
-		const result = await this.datasource.query(query)
-
-		console.log(result)
-
-		return result
-
+		await this.datasource.query(query)
+		
+		return true
     }
-	// make this idemptontent, look for txid before doing any action
+
     async rollback(txid: UUID) {
 		const txExists = await this.txExists(txid)
 		
-		// return true if tx does not exist
+		if (!txExists) {
+			return true
+		}
 		
 		const query = `ROLLBACK PREPARED '${txid}'`
 
-		const result = await this.datasource.query(query)
+		await this.datasource.query(query)
 
-		console.log(result)
-
-		return result
-
+		return true
     }
 
 	private async txExists(txid: UUID) {
@@ -76,10 +66,6 @@ export class PersonsService implements ICoordinatableService {
 
 		const result = await this.datasource.query(query)
 
-		console.log(`result of checking if tx exists with id ${txid} is`)
-		console.log(result)
-
-		return result
-
+		return result[0].exists
 	}
 }

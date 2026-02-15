@@ -9,58 +9,49 @@ export class AddressesService implements ICoordinatableService {
     async prepare(txid: UUID): Promise<boolean> {
 
 		const txExists = await this.txExists(txid)
-		
-		// if txExists, return true
 
-		const query = `
-		BEGIN TRANSACTION;
+		if (txExists) {
+			return true
+		}
 
-		UPDATE 
-			ADDRESSES 
-		SET 
-			CITY = 'New City' 
-		WHERE 
-			id = 1;
+		try {
+			const query = ` BEGIN TRANSACTION; UPDATE ADDRESSES SET CITY = 'New City' WHERE id = 1; PREPARE TRANSACTION '${txid}'; `
+			await this.datasource.query(query)
+			return true
+		} catch (e) {
+			console.log(e.message)
+			return false
+		}
 
-		PREPARE TRANSACTION '${txid}';
-		`
-
-		const result = await this.datasource.query(query)
-
-		console.log(result)
-
-		return false
     }
 
     async commit(txid: UUID) {
 
 		const txExists = await this.txExists(txid)
-		
-		// if it doesnt exist, return true
 
+		if (!txExists) {
+			return true
+		}
+		
 		const query = `COMMIT PREPARED '${txid}'`
 
-		const result = await this.datasource.query(query)
-
-		console.log(result)
-
-		return result
-
+		await this.datasource.query(query)
+		
+		return true
     }
-	// make this idemptontent, look for txid before doing any action
+
     async rollback(txid: UUID) {
 		const txExists = await this.txExists(txid)
 		
-		// return true if tx does not exist
+		if (!txExists) {
+			return true
+		}
 		
 		const query = `ROLLBACK PREPARED '${txid}'`
 
-		const result = await this.datasource.query(query)
+		await this.datasource.query(query)
 
-		console.log(result)
-
-		return result
-
+		return true
     }
 
 	private async txExists(txid: UUID) {
@@ -69,15 +60,12 @@ export class AddressesService implements ICoordinatableService {
 			SELECT EXISTS (
 			  SELECT 1
 			  FROM pg_prepared_xacts
-			  WHERE gid = '${txid}' 
+			  WHERE gid = '${txid}'
 			);
 		`
 
 		const result = await this.datasource.query(query)
 
-		console.log(result)
-
-		return result
-
+		return result[0].exists
 	}
 }
