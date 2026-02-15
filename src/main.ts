@@ -16,7 +16,7 @@ const main = async () => {
 	const coordinatorRepository = coordinatorDatasource.getRepository(CoordinatorLog)
 	const addressService = new AddressesService(addressDatasource)
 	const personService = new PersonsService(personDatasource)
-	const transactionCoordinator = new TransactionCoordinator(addressService, personService, coordinatorRepository)
+	const transactionCoordinator = new TransactionCoordinator(personService, addressService, coordinatorRepository)
 	const server = new Server(transactionCoordinator)
 	await server.init()
 }

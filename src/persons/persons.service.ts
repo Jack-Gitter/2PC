@@ -27,6 +27,7 @@ export class PersonsService implements ICoordinatableService {
 
 		const result = await this.datasource.query(query)
 
+		console.log(`result of person service prepare transaction with id ${txid}`)
 		console.log(result)
 
 		return false
@@ -75,6 +76,7 @@ export class PersonsService implements ICoordinatableService {
 
 		const result = await this.datasource.query(query)
 
+		console.log(`result of checking if tx exists with id ${txid} is`)
 		console.log(result)
 
 		return result
