@@ -27,14 +27,14 @@ export class TransactionCoordinator {
 			console.log(`Failed to prepare transaction with id ${log.transactionId} for person`)
 		}
 
-		// try {
-		// 	addressResponse = await this.addressService.prepare(log.transactionId)
-		// } catch (e) {
-		// 	console.log(`Failed to prepare transaction with id ${log.transactionId} for address`)
-		// }
-		//
-		// log.status = personResponse && addressResponse ? STATUS.COMMIT : STATUS.ROLLBACK
-		// await this.coordinatorRepository.save(log)
+		try {
+			addressResponse = await this.addressService.prepare(log.transactionId)
+		} catch (e) {
+			console.log(`Failed to prepare transaction with id ${log.transactionId} for address`)
+		}
+
+		log.status = personResponse && addressResponse ? STATUS.COMMIT : STATUS.ROLLBACK
+		await this.coordinatorRepository.save(log)
 
 	}
 
