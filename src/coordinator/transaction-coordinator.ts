@@ -13,40 +13,38 @@ export class TransactionCoordinator {
 		const log = new CoordinatorLog(txId)
 		await this.coordinatorRepository.save(log)
 
-		const { personResponse, addressResponse } = await this.phase1(txId)
-
-		log.status = personResponse && addressResponse ? STATUS.COMMIT : STATUS.ROLLBACK
-		await this.coordinatorRepository.save(log)
-
-		await this.phase2(txId, log.status)
+		await this.phase1(log)
+		await this.phase2(log)
 	}
 
-	private async phase1(txId: UUID): Promise<{personResponse: boolean, addressResponse: boolean}> {
+	private async phase1(log: CoordinatorLog) {
 		let personResponse = false
 		let addressResponse = false
 
 		try {
-			personResponse = await this.personsService.prepare(txId)
+			personResponse = await this.personsService.prepare(log.transactionId)
 		} catch (e) {
-			console.log(`Failed to prepare transaction with id ${txId} for person`)
+			console.log(`Failed to prepare transaction with id ${log.transactionId} for person`)
 		}
 
 		try {
-			addressResponse = await this.addressService.prepare(txId)
+			addressResponse = await this.addressService.prepare(log.transactionId)
 		} catch (e) {
-			console.log(`Failed to prepare transaction with id ${txId} for address`)
+			console.log(`Failed to prepare transaction with id ${log.transactionId} for address`)
 		}
 
-		return { personResponse, addressResponse }
+		log.status = personResponse && addressResponse ? STATUS.COMMIT : STATUS.ROLLBACK
+		await this.coordinatorRepository.save(log)
+
 	}
 
-	private async phase2(txId: UUID, status: STATUS) {
-		if (status === STATUS.COMMIT) {
-			await this.commit(txId)
+	private async phase2(log: CoordinatorLog) {
+		if (log.status === STATUS.COMMIT) {
+			await this.commit(log.transactionId)
 		} else {
-			await this.rollback(txId)
+			await this.rollback(log.transactionId)
 		}
-		await this.coordinatorRepository.update({transactionId: txId}, {status: STATUS.DONE});
+		await this.coordinatorRepository.update({transactionId: log.transactionId}, {status: STATUS.DONE});
 	}
 
 	async rollback(txid: UUID) {
@@ -67,12 +65,9 @@ export class TransactionCoordinator {
 		for (const log of incompleteTxs) {
 			try {
 				if (!log.status) {
-					const { personResponse, addressResponse } = await this.phase1(log.transactionId)
-					log.status = personResponse && addressResponse ? STATUS.COMMIT : STATUS.ROLLBACK
-					await this.coordinatorRepository.save(log)
+					await this.phase1(log)
 				}
-				
-				await this.phase2(log.transactionId, log.status)
+				await this.phase2(log)
 				
 			} catch (error) {
 				console.error(`Recovery failed for transaction ${log.transactionId}:`, error)
