@@ -5,6 +5,7 @@ services:
     image: postgres:16
     container_name: multi-db-postgres
     restart: unless-stopped
+    command: postgres -c max_prepared_transactions=100
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: strongpassword
